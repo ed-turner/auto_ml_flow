@@ -30,8 +30,8 @@ def engineer_text_features(train_df, test_df, textual_features_dict):
 
     for feat in textual_features_dict.keys():
 
-        model_type = textual_features_dict.get('model_type')
-        model_params = textual_features_dict.get('model_params')
+        model_type = textual_features_dict.get('model_type', 'tfidf')
+        model_params = textual_features_dict.get('model_params', {})
 
         if model_type == 'count':
             model = CountVectorizer(**model_params)
