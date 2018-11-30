@@ -50,7 +50,8 @@ def main(df, features):
     logger.info("Number of samples before: {}".format(df_filtered.shape[0]))
 
     for feat in features:
-        df_filtered = df_filtered.loc[determine_outlier(df_filtered[feat]), :].reset_index(drop=True)
+        indices = determine_outlier(df_filtered[feat].values)
+        df_filtered = df_filtered.loc[indices, :].reset_index(drop=True)
 
     logger.info("Number of samples after: {}".format(df_filtered.shape[0]))
 
