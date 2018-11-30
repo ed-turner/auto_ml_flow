@@ -52,6 +52,8 @@ def main(train_df, test_df, numeric_feats, text_feats=None, cat_feats=None):
     # imputes numeric values
     train_filled_df, test_filled_df = numeric_impute(train_df, test_df, numeric_feats)
 
+    assert ~(train_filled_df[numeric_feats].isnull().any().any() | test_filled_df[numeric_feats].isnull().any().any())
+
     # impute text features with empty string
     if text_feats is None:
         pass
@@ -74,6 +76,8 @@ def main(train_df, test_df, numeric_feats, text_feats=None, cat_feats=None):
 
         train_filled_df = train_filled_df.fillna(value={col: -1 for col in cat_feats})
         test_filled_df = test_filled_df.fillna(value={col: -1 for col in cat_feats})
+
+        assert ~(train_filled_df[cat_feats].isnull().any().any() | test_filled_df[cat_feats].isnull().any().any())
 
     logger.info("Number of samples with missing values in training dataset: {}".format(train_filled_df.isnull()
                                                                                        .any(axis=1).sum()))
