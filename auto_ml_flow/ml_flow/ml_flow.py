@@ -36,7 +36,7 @@ def exec(train_df, test_df, pred_col, numeric_feats=None, cat_feats=None, text_f
     if numeric_feats is None:
         numeric_feats = list(set(train_df.columns) - set(pred_col))
 
-    if train_df.isnull().sum().sum() > 0 | test_df.isnull().sum().sum():
+    if train_df.isnull().sum().sum() > 0 | test_df.isnull().sum().sum() > 0:
         logger.info("We are imputing missing values")
 
         train_data, test_data = impute(train_df, test_df, numeric_feats, cat_feats=cat_feats, text_feats=text_features)
