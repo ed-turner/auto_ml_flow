@@ -76,8 +76,8 @@ def main(train_df, test_df, numeric_feats, text_feats=None, cat_feats=None):
         test_filled_df = test_filled_df.fillna({col: -1 for col in cat_feats})
 
     logger.info("Number of samples with missing values in training dataset: {}".format(train_filled_df.isnull()
-                                                                                       .sum().sum()))
+                                                                                       .any(axis=1).sum()))
     logger.info("Number of samples with missing values in testing dataset: {}".format(test_filled_df.isnull()
-                                                                                      .sum().sum()))
+                                                                                      .any(axis=1).sum()))
 
     return train_filled_df, test_filled_df
