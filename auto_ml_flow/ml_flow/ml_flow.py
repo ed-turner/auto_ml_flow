@@ -36,7 +36,7 @@ def exec(train_df, test_df, pred_col, numeric_feats=None, cat_feats=None, text_f
     if numeric_feats is None:
         numeric_feats = list(set(train_df.columns) - set(pred_col))
 
-    if train_df.isnull().sum().sum() > 0 | test_df.isnull().sum().sum() > 0:
+    if train_df.isnull().any(axis=None) | test_df.isnull().any(axis=None):
         logger.info("We are imputing missing values")
 
         train_data, test_data = impute(train_df, test_df, numeric_feats, cat_feats=cat_feats, text_feats=text_features)
@@ -44,7 +44,7 @@ def exec(train_df, test_df, pred_col, numeric_feats=None, cat_feats=None, text_f
     else:
         train_data, test_data = train_df.copy(), test_df.copy()
 
-    assert (train_data.isnull().sum().sum() == 0) & (test_data.isnull().sum().sum() == 0)
+    assert ~(train_data.isnull().any(axis=None)) & (test_data.isnull().any(axis=None))
 
     if remove_outliers:
         logger.info("We are removing any outliers from the training dataset using the numeric features and " +

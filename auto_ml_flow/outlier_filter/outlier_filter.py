@@ -45,6 +45,8 @@ def main(df, features):
     :return:
     """
 
+    assert ~df[features].isnull().any(axis=None)
+
     df_filtered = df.copy()
 
     logger.info("Number of samples before: {}".format(df_filtered.shape[0]))
