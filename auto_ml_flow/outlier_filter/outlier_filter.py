@@ -1,4 +1,8 @@
+import logging
+
 import numpy as np
+
+logger = logging.getLogger(__name__)
 
 
 def determine_outlier(x, is_weak=True):
@@ -11,9 +15,9 @@ def determine_outlier(x, is_weak=True):
     """
 
     # finds the percentiles of x
-    x_25 = np.percentile(x, 0.25)
+    x_25 = np.percentile(x, 25)
     x_med = np.median(x)
-    x_75 = np.percentile(x, 0.75)
+    x_75 = np.percentile(x, 75)
 
     # finds the interquartile range of x
     x_qr = x_75 - x_25
@@ -43,7 +47,11 @@ def main(df, features):
 
     df_filtered = df.copy()
 
+    logger.info("Number of samples before: {}".format(df_filtered.shape[0]))
+
     for feat in features:
         df_filtered = df_filtered.loc[determine_outlier(df_filtered[feat]), :].reset_index(drop=True)
+
+    logger.info("Number of samples after: {}".format(df_filtered.shape[0]))
 
     return df_filtered

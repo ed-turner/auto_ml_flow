@@ -1,6 +1,10 @@
+import logging
+
 import pandas as pd
 import numpy as np
 from scipy.stats import f as f_dist
+
+logger = logging.getLogger(__name__)
 
 
 def two_tail_hypothesis_test(df, binary_col, val_col, confidence_level=1.96):
@@ -195,5 +199,7 @@ def main(train_df, test_df, numeric_feats, pred_col, cat_feats=None, corr_thrshl
                     pass
                 else:
                     drop_cols.append(feat)
+
+    logger.info("Features to drop from training and testing datasets: {}\n".format(drop_cols))
 
     return train_df.drop(drop_cols, axis=1), test_df.drop(drop_cols, axis=1)
