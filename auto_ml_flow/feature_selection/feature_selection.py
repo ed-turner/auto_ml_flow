@@ -134,12 +134,15 @@ def local_correlation(df, val_col, pred_col, n=50):
 
         indices = (df[val_col] <= x_upper) & (x_lower <= df[val_col])
 
-        local_val_series = df.loc[indices, val_col].reset_index(drop=True)
-        local_pred_series = df.loc[indices, pred_col].reset_index(drop=True)
+        if np.sum(indices) == 0:
+            pass
+        else:
+            local_val_series = df.loc[indices, val_col].reset_index(drop=True)
+            local_pred_series = df.loc[indices, pred_col].reset_index(drop=True)
 
-        corr_vals.append(local_val_series.corr(local_pred_series))
+            corr_vals.append(local_val_series.corr(local_pred_series))
 
-    avg_corr = np.tanh(np.mean(np.arctanh(np.abs(corr_vals))))
+    avg_corr = np.tanh(np.mean(np.arctanh(np.abs(corr_vals) + 1e-14)))
 
     return avg_corr
 
@@ -202,4 +205,4 @@ def main(train_df, test_df, numeric_feats, pred_col, cat_feats=None, corr_thrshl
 
     logger.info("Features to drop from training and testing datasets: {}\n".format(drop_cols))
 
-    return train_df.drop(drop_cols, axis=1), test_df.drop(drop_cols, axis=1)
+    return train_df.drop(drop_cols, axis=1), test_df.drop(drop_cols, axis=1), drop_cols

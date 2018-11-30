@@ -60,7 +60,11 @@ def exec(train_df, test_df, pred_col, numeric_feats=None, cat_feats=None, text_f
         logger.info("Performing feature selection.")
 
         try:
-            train_data, test_data = select_feature(train_data, test_data, numeric_feats, pred_col, cat_feats)
+            train_data, test_data, drop_cols = select_feature(train_data, test_data, numeric_feats, pred_col, cat_feats)
+
+            numeric_feats = list(set(numeric_feats) - set(drop_cols))
+            cat_feats = list(set(cat_feats) - set(drop_cols))
+
         except Exception as e:
             logger.fatal(e, exc_info=True)
     else:
