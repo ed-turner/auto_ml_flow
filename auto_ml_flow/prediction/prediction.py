@@ -40,7 +40,7 @@ def kfold_prediction(est, x_train, x_test, y_train, num_folds=5):
 
         test_kfold_pred_list.append(est.predict(x_test))
 
-    test_kfold_pred = np.mean(np.column_stack(test_kfold_pred_list), axis=0)
+    test_kfold_pred = np.mean(np.column_stack(test_kfold_pred_list), axis=1)
 
     logger.info("Average validation score: {}".format(np.mean(val_score_list)))
 
