@@ -1,4 +1,7 @@
+import logging
 import pandas as pd
+
+logger = logging.getLogger(__name__)
 
 
 def numeric_impute(train_df, test_df, numeric_feats):
@@ -41,6 +44,11 @@ def main(train_df, test_df, numeric_feats, text_feats=None, cat_feats=None):
     assert isinstance(test_df, pd.DataFrame)
     assert isinstance(numeric_feats, list)
 
+    logger.info("Percentage of missing values in numeric features: \n{}".format(pd.concat([train_df[numeric_feats],
+                                                                                           test_df[numeric_feats]],
+                                                                                          ignore_index=True)
+                                                                                .isnull().mean()))
+
     # imputes numeric values
     train_filled_df, test_filled_df = numeric_impute(train_df, test_df, numeric_feats)
 
@@ -59,7 +67,17 @@ def main(train_df, test_df, numeric_feats, text_feats=None, cat_feats=None):
     else:
         assert isinstance(cat_feats, list)
 
+        logger.info("Percentage of missing values in categorical features: \n{}".format(pd.concat([train_df[cat_feats],
+                                                                                                   test_df[cat_feats]],
+                                                                                                  ignore_index=True)
+                                                                                        .isnull().mean()))
+
         train_filled_df = train_filled_df.fillna({col: -1 for col in cat_feats})
         test_filled_df = test_filled_df.fillna({col: -1 for col in cat_feats})
+
+    logger.info("Number of samples with missing values in training dataset: {}".format(train_filled_df.isnull()
+                                                                                       .sum().sum()))
+    logger.info("Number of samples with missing values in testing dataset: {}".format(test_filled_df.isnull()
+                                                                                      .sum().sum()))
 
     return train_filled_df, test_filled_df
