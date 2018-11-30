@@ -95,4 +95,8 @@ def exec(train_df, test_df, pred_col, numeric_feats=None, cat_feats=None, text_f
 
     logger.info("Making predictions on the final testing dataset.")
 
-    return predict(train_data, test_data, y_train, model_dict)
+    test_pred = predict(train_data, test_data, y_train, model_dict)
+
+    assert test_pred.shape[0] == test_df.shape[0]
+
+    return test_pred

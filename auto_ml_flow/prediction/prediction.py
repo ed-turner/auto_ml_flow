@@ -42,6 +42,8 @@ def kfold_prediction(est, x_train, x_test, y_train, num_folds=5):
 
     test_kfold_pred = np.mean(np.column_stack(test_kfold_pred_list), axis=0)
 
+    logger.info("Average validation score: {}".format(np.mean(val_score_list)))
+
     return train_kfold_pred, test_kfold_pred
 
 
@@ -66,6 +68,8 @@ def main(x_train, x_test, y_train, model_dict):
         if model_name == 'ensemble':
             pass
         else:
+            logger.info("Model Name: {}".format(model_name))
+
             est = model_dict.get(model_name)
 
             train_kfold_pred, test_kfold_pred = kfold_prediction(est, x_train, x_test, y_train)
@@ -82,7 +86,7 @@ def main(x_train, x_test, y_train, model_dict):
         if test_preds.shape[1] == 1:
             return test_preds
         else:
-            return np.mean(test_preds, axis=0)
+            return np.mean(test_preds, axis=1)
 
     else:
 
