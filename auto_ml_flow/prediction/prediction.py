@@ -12,6 +12,7 @@ def kfold_prediction(est, x_train, x_test, y_train, num_folds):
     """
     This is used to help create unbiased predictions.
 
+    :param est:
     :param x_train:
     :param x_test:
     :param y_train:
@@ -42,7 +43,7 @@ def kfold_prediction(est, x_train, x_test, y_train, num_folds):
 
     test_kfold_pred = np.mean(np.column_stack(test_kfold_pred_list), axis=1)
 
-    logger.info("Average validation score: {}".format(np.mean(val_score_list)))
+    logger.info("Validation score: {} ± {}".format(np.mean(val_score_list), np.std(val_score_list)))
 
     return train_kfold_pred, test_kfold_pred
 
@@ -91,6 +92,6 @@ def main(x_train, x_test, y_train, model_dict, num_folds=5):
 
     else:
 
-        est.fit(train_preds, y_train)
+        _, final_test_preds = kfold_prediction(est, train_preds, test_preds, y_train, num_folds)
 
-        return est.predict(test_preds)
+        return final_test_preds
