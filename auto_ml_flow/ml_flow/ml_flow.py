@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 
 
 def exec(train_df, test_df, pred_col, numeric_feats=None, cat_feats=None, text_features=None, remove_outliers=False,
-         select_features=False, engineer_features=None, model_dict=None):
+         select_features=False, engineer_features=None, model_dict=None, num_folds=5):
     """
 
     :param train_df:
@@ -25,6 +25,7 @@ def exec(train_df, test_df, pred_col, numeric_feats=None, cat_feats=None, text_f
     :param select_features:
     :param engineer_features:
     :param model_dict:
+    :param num_folds:
     :return:
     """
 
@@ -97,7 +98,7 @@ def exec(train_df, test_df, pred_col, numeric_feats=None, cat_feats=None, text_f
 
     assert test_df.shape[0] == test_data.shape[0]
 
-    test_pred = predict(train_data, test_data, y_train, model_dict)
+    test_pred = predict(train_data, test_data, y_train, model_dict, num_folds=num_folds)
 
     assert test_pred.shape[0] == test_df.shape[0]
 

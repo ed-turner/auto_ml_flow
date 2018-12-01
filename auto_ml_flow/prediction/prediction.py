@@ -8,7 +8,7 @@ from sklearn.linear_model import LinearRegression
 logger = logging.getLogger(__name__)
 
 
-def kfold_prediction(est, x_train, x_test, y_train, num_folds=5):
+def kfold_prediction(est, x_train, x_test, y_train, num_folds):
     """
     This is used to help create unbiased predictions.
 
@@ -47,7 +47,7 @@ def kfold_prediction(est, x_train, x_test, y_train, num_folds=5):
     return train_kfold_pred, test_kfold_pred
 
 
-def main(x_train, x_test, y_train, model_dict):
+def main(x_train, x_test, y_train, model_dict, num_folds=5):
     """
     This is used create lower-varianced solutions
 
@@ -55,6 +55,7 @@ def main(x_train, x_test, y_train, model_dict):
     :param x_test:
     :param y_train:
     :param model_dict:
+    :param num_folds:
     :return:
     """
 
@@ -72,7 +73,7 @@ def main(x_train, x_test, y_train, model_dict):
 
             est = model_dict.get(model_name)
 
-            train_kfold_pred, test_kfold_pred = kfold_prediction(est, x_train, x_test, y_train)
+            train_kfold_pred, test_kfold_pred = kfold_prediction(est, x_train, x_test, y_train, num_folds)
 
             train_preds.append(train_kfold_pred)
             test_preds.append(test_kfold_pred)
