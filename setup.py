@@ -8,7 +8,7 @@ with open("README.txt") as f:
 with open("LICENSE") as f:
     LICENSE = f.readlines()
 
-REQUIREMENTS = ['pandas==0.23.4', 'numpy==1.15.4', 'sklearn==0.0', 'scipy==1.1.0']
+REQUIREMENTS = ['pandas==0.23.4', 'numpy==1.15.4', 'sklearn==0.0', 'scipy==1.1.0', 'numdifftools']
 
 setup(
     name='auto_ml_flow',
